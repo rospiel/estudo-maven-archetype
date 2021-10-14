@@ -37,6 +37,7 @@
       <directory></directory>
       <includes>
         <include>Dockerfile</include>
+        <include>wait-for-it.sh</include>
         <include>.gitignore</include>
       </includes>
     </fileSet>

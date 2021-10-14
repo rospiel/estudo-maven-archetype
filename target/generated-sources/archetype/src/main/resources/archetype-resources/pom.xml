@@ -53,10 +53,12 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
+        <!-- <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-        </dependency>
+            <artifactId>
+                spring-cloud-starter-netflix-eureka-client
+            </artifactId>
+        </dependency> -->
 
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -97,6 +99,11 @@
             <artifactId>flyway-core</artifactId>
         </dependency> -->
 
+        <!-- <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency> -->
+
     </dependencies>
 
     <build>
@@ -116,8 +123,16 @@
                     <version>3.0.1</version>
                 </plugin>
             </plugins>
-
         </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <artifactId>maven-failsafe-plugin</artifactId>
+            </plugin>
+        </plugins>
     </build>
 
     <dependencyManagement>
@@ -131,4 +146,34 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <profiles>
+        <profile>
+            <id>docker</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.spotify</groupId>
+                        <artifactId>dockerfile-maven-plugin</artifactId>
+                        <version>1.4.13</version>
+                        <executions>
+                            <execution>
+                                <id>default</id>
+                                <goals>
+                                    <goal>build</goal>
+                                    <goal>push</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <repository>rospiel/ms-folha-pagamento</repository>
+                            <buildArgs>
+                                <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+                            </buildArgs>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
